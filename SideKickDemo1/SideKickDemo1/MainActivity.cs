@@ -3,6 +3,7 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Runtime;
 using Android.Widget;
+using System;
 
 namespace SideKickDemo1
 {
@@ -10,6 +11,8 @@ namespace SideKickDemo1
     public class MainActivity : AppCompatActivity
     {
         TextView TimeTextView;
+        int secondsOffset = 0;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -22,11 +25,20 @@ namespace SideKickDemo1
             TimeTextView = FindViewById<TextView>(Resource.Id.textViewTime);
 
             turnBackTimeButton.Click += TurnBackTimeButton_Click;
+
+            System.Timers.Timer updatingClockTimer = new System.Timers.Timer();
+            updatingClockTimer.Interval = 1000;
+            updatingClockTimer.Enabled = true;
+            updatingClockTimer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
+            {
+                TimeTextView.Text = "It is " + DateTime.Now.AddSeconds(secondsOffset).ToLongTimeString() + " now";
+            };
+            updatingClockTimer.Start();
         }
 
         private void TurnBackTimeButton_Click(object sender, System.EventArgs e)
         {
-            TimeTextView.Text = "It's adventure time now!";
+            secondsOffset -= 30;
         }
     }
 }
