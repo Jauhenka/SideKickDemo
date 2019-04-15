@@ -11,6 +11,7 @@ namespace SideKickDemo1
     public class MainActivity : AppCompatActivity
     {
         TextView TimeTextView;
+        LinearLayout MenuLinearLayout;
         int secondsOffset = 0;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -23,8 +24,11 @@ namespace SideKickDemo1
             ImageView exitImageView = FindViewById<ImageView>(Resource.Id.imageViewExit);
             Button menuButton = FindViewById<Button>(Resource.Id.buttonMenu);
             TimeTextView = FindViewById<TextView>(Resource.Id.textViewTime);
+            MenuLinearLayout = FindViewById<LinearLayout>(Resource.Id.linearLayoutMenu);
 
             turnBackTimeButton.Click += TurnBackTimeButton_Click;
+            menuButton.Click += MenuButton_Click;
+            MenuLinearLayout.Click += MenuLinearLayout_Click;
 
             System.Timers.Timer updatingClockTimer = new System.Timers.Timer();
             updatingClockTimer.Interval = 1000;
@@ -34,6 +38,16 @@ namespace SideKickDemo1
                 TimeTextView.Text = "It is " + DateTime.Now.AddSeconds(secondsOffset).ToLongTimeString() + " now";
             };
             updatingClockTimer.Start();
+        }
+
+        private void MenuLinearLayout_Click(object sender, EventArgs e)
+        {
+            MenuLinearLayout.Visibility = Android.Views.ViewStates.Invisible;
+        }
+
+        private void MenuButton_Click(object sender, EventArgs e)
+        {
+            MenuLinearLayout.Visibility = Android.Views.ViewStates.Visible;
         }
 
         private void TurnBackTimeButton_Click(object sender, System.EventArgs e)
